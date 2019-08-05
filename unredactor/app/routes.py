@@ -10,11 +10,16 @@ def sort_words(text):
 @app.route('/')
 @app.route('/index')
 def index():
-    text = request.args.get('text')
-    unredacted_text = sort_words(text)
-    return render_template('index.html', text=text, unredacted_text=unredacted_text)
+    return render_template('index.html', **locals())
 
 
 @app.route('/about')
 def about():
     return render_template('about.html', **locals())
+
+
+@app.route('/unredact')
+def unredact():
+    text = request.args.get('text')
+    unredacted_text = sort_words(text)
+    return render_template('unredacted_text.json', text=text, unredacted_text=unredacted_text)
