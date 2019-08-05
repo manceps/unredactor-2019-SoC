@@ -6,16 +6,16 @@ from app import app
 def sort_words(text):
     return ' '.join(sorted(text.split()))
 
-
+from constants import context
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', **locals())
+    return render_template('index.html', **context)
 
 
 @app.route('/about')
 def about():
-    return render_template('about.html', **locals())
+    return render_template('about.html', **context)
 
 
 @app.route('/unredact')
