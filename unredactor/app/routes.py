@@ -2,11 +2,10 @@ from flask import request
 from flask import render_template
 from app import app
 
-
-def sort_words(text):
-    return ' '.join(sorted(text.split()))
-
 from constants import context
+from nlp import sort_words
+
+
 @app.route('/')
 @app.route('/index')
 def index():
