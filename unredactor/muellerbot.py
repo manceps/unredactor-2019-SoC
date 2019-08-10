@@ -18,14 +18,14 @@ MARKER = 'unk'         # our abbreviated UNKOWN word marker (blank)
 MASK_TOKEN = '[MASK]'  # defined by the BERT model
 
 BERT_MODEL_CASED = False
-BERT_MODELS_DIR = "/Users/julianmcomie/Documents/Github/unredactor/unredactor/app/models/uncased_L-12_H-768_A-12"
+BERT_MODELS_DIR = "~/apps/unredactor/unredactor/app/models/uncased_L-12_H-768_A-12"
 
 BERT_MODEL_DATE ="2018_10_18"
 BERT_MODEL_NAME ="uncased_L-12_H-768_A-12"
 
 BERT_MODEL_DIR = "$BERT_MODELS_DIR/$BERT_MODEL_NAME"
 BERT_MODEL_ZIP ="$BERT_MODEL_DIR.zip"
-UNZIPPED_MODEL_PATH = "/Users/julianmcomie/Documents/Github/unredactor/unredactor/app/models/uncased_L-12_H-768_A-12"
+UNZIPPED_MODEL_PATH = "~/apps/unredactor/unredactor/app/models/uncased_L-12_H-768_A-12"
 CONFIG_PATH = "$UNZIPPED_MODEL_PATH/bert_config.json"
 CHECKPOINT_PATH = "$UNZIPPED_MODEL_PATH/bert_model.ckpt"
 DICT_PATH = "$UNZIPPED_MODEL_PATH/vocab.txt"
@@ -538,14 +538,14 @@ So the uncased BERT model did fine on sentences where case isn't important. But 
 MARKER = 'unk'
 
 BERT_MODEL_CASED = True
-BERT_MODELS_DIR = "/Users/julianmcomie/Documents/Github/unredactor/unredactor/app/models/cased_L-12_H-768_A-12"
+BERT_MODELS_DIR = "~/apps/unredactor/unredactor/app/models/cased_L-12_H-768_A-12"
 
 BERT_MODEL_DATE ="2018_10_18"
 BERT_MODEL_NAME ="cased_L-12_H-768_A-12"
 
 BERT_MODEL_DIR = "$BERT_MODELS_DIR/$BERT_MODEL_NAME"
 BERT_MODEL_ZIP ="$BERT_MODEL_DIR.zip"
-UNZIPPED_MODEL_PATH = "/Users/julianmcomie/Documents/Github/unredactor/unredactor/app/models/cased_L-12_H-768_A-12"
+UNZIPPED_MODEL_PATH = "~/apps/unredactor/unredactor/app/models/cased_L-12_H-768_A-12"
 CONFIG_PATH = "$UNZIPPED_MODEL_PATH/bert_config.json"
 CHECKPOINT_PATH = "$UNZIPPED_MODEL_PATH/bert_model.ckpt"
 DICT_PATH = "$UNZIPPED_MODEL_PATH/vocab.txt"
