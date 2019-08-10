@@ -22,11 +22,11 @@ def about():
     return render_template('about.html', **context)
 
 
-#@app.route('/unredact')
-#def unredact():
-#    text = request.args.get('text')
-#    unredacted_text = sort_words(text)
-#    return render_template('unredacted_text.json', text=text, unredacted_text=unredacted_text)
+@app.route('/api')
+def api():
+    text = request.args.get('text')
+    unredacted_text = sort_words(text)
+    return render_template('unredacted_text.json', text=text, unredacted_text=unredacted_text)
 
 @app.route('/unredactor', methods=['GET', 'POST'])
 def unredactor():
@@ -37,6 +37,5 @@ def unredactor():
 	#the actual unredact function (muellerbot) runs	
 
 	if form.validate_on_submit():
-		flash('Unredact request')
 		unredacted_text = unredact(str(form.text.data))
 	return render_template('unredact.html', title='Unredact', form=form, unredacted_text=unredacted_text)
