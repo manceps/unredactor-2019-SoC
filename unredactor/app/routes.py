@@ -1,6 +1,7 @@
 from flask import render_template, flash, redirect, request, url_for
 from app import app
 from app.forms import UnredactForm
+#from muellerbot import unredact
 from unredactor_functions import unredact
 
 def sort_words(text):
@@ -28,7 +29,11 @@ def about():
 def unredactor():
 	form = UnredactForm()
 	unredacted_text = ''
+
+	#Depending on which module is imported, either the sort function (unredactor functions) or
+	#the actual unredact function (muellerbot) runs	
+
 	if form.validate_on_submit():
 		flash('Unredact request')
-		unredacted_text = unredact(form.text.data)
+		unredacted_text = unredact(str(form.text.data))
 	return render_template('unredact.html', title='Unredact', form=form, unredacted_text=unredacted_text)
