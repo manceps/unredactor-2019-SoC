@@ -4,6 +4,7 @@ from app import app
 from constants import context
 from nlp import sort_words
 from app.forms import UnredactForm
+#from muellerbot import unredact
 from unredactor_functions import unredact
 
 # def sort_words(text):
@@ -21,17 +22,20 @@ def about():
     return render_template('about.html', **context)
 
 
-#@app.route('/unredact')
-#def unredact():
-#    text = request.args.get('text')
-#    unredacted_text = sort_words(text)
-#    return render_template('unredacted_text.json', text=text, unredacted_text=unredacted_text)
+@app.route('/api')
+def api():
+    text = request.args.get('text')
+    unredacted_text = sort_words(text)
+    return render_template('unredacted_text.json', text=text, unredacted_text=unredacted_text)
 
 @app.route('/unredactor', methods=['GET', 'POST'])
 def unredactor():
 	form = UnredactForm()
 	unredacted_text = ''
+
+	#Depending on which module is imported, either the sort function (unredactor functions) or
+	#the actual unredact function (muellerbot) runs	
+
 	if form.validate_on_submit():
-		flash('Unredact request')
-		unredacted_text = unredact(form.text.data)
+		unredacted_text = unredact(str(form.text.data))
 	return render_template('unredact.html', title='Unredact', form=form, unredacted_text=unredacted_text)
