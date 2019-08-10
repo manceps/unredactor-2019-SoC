@@ -1,8 +1,8 @@
 from flask import render_template, flash, redirect, request, url_for
 from app import app
 
-from constants import context
-from nlp import sort_words
+from app.constants import context
+from app.nlp import sort_words
 from app.forms import UnredactForm
 #from muellerbot import unredact
 from unredactor_functions import unredact
