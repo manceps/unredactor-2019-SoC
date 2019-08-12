@@ -6,7 +6,7 @@ if [ -z "$UNREDACTOR_DIR" ] ; then
   # to the script (e.g. permissions re-evaled after suid)
   exit 1  # fail
 fi
-export UNREDACTOR_DIR=$(dirname $UNREDACTOR_DIR)/unredactor
+export UNREDACTOR_DIR=$(dirname $UNREDACTOR_DIR)/unredactor/unredactor
 echo "$UNREDACTOR_DIR"
 
 cd $UNREDACTOR_DIR
