@@ -7,10 +7,6 @@ from app.forms import UnredactForm
 #from muellerbot import unredact
 from unredactor_functions import unredact
 
-# def sort_words(text):
-#     return ' '.join(sorted(text.split()))
-
-
 @app.route('/')
 @app.route('/index')
 def index():
@@ -20,7 +16,6 @@ def index():
 @app.route('/about')
 def about():
     return render_template('about.html', **context)
-
 
 @app.route('/api')
 def api():
