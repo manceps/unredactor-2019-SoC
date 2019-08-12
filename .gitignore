@@ -102,3 +102,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# data files
+.bert_model.ckpt.data-00000-of-00001
