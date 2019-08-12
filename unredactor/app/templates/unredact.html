@@ -1,17 +1,13 @@
 {% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
-{% block content %}
-	<h1>Unredact Text</h1>
-	<form action="" method="post" novalidate>
-		{{ form.hidden_tag() }}
-		<p>
-			{{ form.text.label }}<br>
-			{{ form.text }}
-			{% for error in form.text.errors %}
-			<span style="color: red;">[{{error }}]</span>
-			{% endfor %}
-		</p>
-		<p>{{ form.submit() }}</p>
-	</form>
+{% block app_content %}
+	<h1>Unredact</h1>
+	<div class="row">
+		<div class="col-md-4">
+			{{ wtf.quick_form(form, horizontal_columns=('lg', 20, 10)) }}
+		</div>
+	</div>
 	Output: {{ unredacted_text }}
 {% endblock %}
+
