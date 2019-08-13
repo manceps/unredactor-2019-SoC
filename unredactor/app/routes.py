@@ -20,8 +20,8 @@ def about():
 @app.route('/api')
 def api():
     text = request.args.get('text')
-    unredacted_text = sort_words(text)
-    return render_template('unredacted.json', text=text, unredacted_text=unredacted_text)
+    unredacted_text, unredacted_words = unredact(text, get_words=True)
+    return render_template('unredacted.json', text=text, unredacted_text=unredacted_text, unredacted_words=unredacted_words)
 
 @app.route('/unredactor', methods=['GET', 'POST'])
 def unredactor():
