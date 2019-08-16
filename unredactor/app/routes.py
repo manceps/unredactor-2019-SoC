@@ -36,3 +36,7 @@ def unredactor():
 	if form.validate_on_submit():
 		unredacted_text = unredact(str(form.text.data))
 	return render_template('unredact.html', title='Unredact', form=form, unredacted_text=unredacted_text)
+
+@app.route('/static/<fname>')
+def static_files(fname):
+    return flask.redirect(flask.url_for('static', filename='img/' + fname), code=301)
