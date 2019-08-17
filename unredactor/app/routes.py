@@ -27,12 +27,12 @@ def api():
 
 @app.route('/unredactor', methods=['GET', 'POST'])
 def unredactor():
-	form = UnredactForm()
-	unredacted_text = ''
+    form = UnredactForm()
+    text = ''
 
-	#Depending on which module is imported, either the sort function (unredactor functions) or
-	#the actual unredact function (muellerbot) runs	
+    #Depending on which module is imported, either the sort function (unredactor functions) or
+    #the actual unredact function (muellerbot) runs	
 
-	if form.validate_on_submit():
-		unredacted_text = unredact(str(form.text.data))
-	return render_template('unredact.html', title='Unredact', form=form, unredacted_text=unredacted_text)
+    if form.validate_on_submit():
+         text = str(form.text.data)
+    return render_template('unredact.html', title='Unredact', form=form, text=text, unredacted_text=unredact(text))

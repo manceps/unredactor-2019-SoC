@@ -1,7 +1,9 @@
 {% extends 'bootstrap/base.html' %}
 
-{% block title %}
-	Unredactor
+{% block head %}
+	{{ super() }}
+	<title>Unredactor</title>
+	<script src="https://code.jquery.com/jquery-git.js"></script>
 {% endblock %}
 
 {% block navbar %}
