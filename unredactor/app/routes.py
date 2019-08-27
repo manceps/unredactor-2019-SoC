@@ -25,6 +25,15 @@ def api():
         unredacted_text, unredacted_words = unredact(text, get_words=True)
     return render_template('unredacted.json', text=text, unredacted_text=unredacted_text, unredacted_words=unredacted_words)
 
+@app.route('/api/sort_words')
+def api_sort_words():
+    unredacted_text, unredacted_words = None, None
+    text = request.args.get('text')
+    if text:
+        unredacted_text, unredacted_words = unredact(text, get_words=True)
+    return render_template('unredacted.json', text=text, unredacted_text=unredacted_text, unredacted_words=unredacted_words)
+
+
 @app.route('/unredactor', methods=['GET', 'POST'])
 def unredactor():
     form = UnredactForm()
