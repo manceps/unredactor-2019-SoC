@@ -23,6 +23,11 @@ def api():
     text = request.args.get('text')
     if text:
         unredacted_text, unredacted_words = unredact(text, get_words=True)
+        final_words = "["
+        for word in unredacted_words:
+            final_words = final_words + '''"''' + word + '''", '''
+        final_words = final_words[:len(final_words)-2] + "]"
+        unredacted_words = final_words
     return render_template('unredacted.json', text=text, unredacted_text=unredacted_text, unredacted_words=unredacted_words)
 
 @app.route('/unredactor', methods=['GET', 'POST'])
