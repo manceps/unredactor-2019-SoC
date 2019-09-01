@@ -105,4 +105,7 @@ venv.bak/
 .mypy_cache/
 
 # data files
-.bert_model.ckpt.data-00000-of-00001
+/data/
+*.h5
+bert_model.ckpt*
+.bert_model.ckpt*

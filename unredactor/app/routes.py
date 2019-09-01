@@ -23,7 +23,7 @@ def api():
     original_text = request.args.get('text')
     print(len(original_text), type(original_text))
     if original_text:
-        unredacted_text = unredact(original_text, get_words=False)
+        unredacted_text, unredacted_words = unredact(original_text, get_words=True)
     #    final_words = "["
     #    for word in unredacted_words:
     #        final_words = final_words + '"' + word + '", '
