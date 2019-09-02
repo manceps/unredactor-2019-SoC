@@ -38,8 +38,7 @@ P = None
 
 """## UNNECESSARY CODE
 
-These are functions we used to process the Mueller report.
-You may not ever need them.
+These are functions we used to process the Mueller report. You may not ever need them.
 But there here in case you wan to learn more about regular expressions.
 
 You can use this function to find redactions surrounded by square brackets, if you like.
@@ -52,8 +51,9 @@ def find_redactions(s):
 
 
 """We used this function to try to find recactions markers in the Mueller Report.
-The OCR usually contained redactions marked with "[HARM]", or "[Personal Privacy]"
-or "[Grand Jury]", so this function returns a list of some bits of text that look like that."""
+The OCR usually contained redactions marked with "[HARM]", or "[Personal Privacy]" or
+"[Grand Jury]", so this function returns a list of some bits of text that look like that.
+"""
 
 
 def get_probable_redactions(df):
@@ -145,46 +145,6 @@ REDACTION_MARKERS = set([
 
 MARKER = 'unk'         # our short marker to redact text
 MASK_TOKEN = '[MASK]'  # the MARKER token used in BERT to identify a token to predict
-
-
-def find_repeated_substring(text, substring=MARKER, max_occurences=32):
-    """ Find contiguous redaction markers and return the start locations
-
-    >>> text = 'Mueller said "MASK MASK MASK", then walked away.'
-    >>> find_repeated_substring(text, 'MASK')
-    [14, 19, 24]
-    >>> find_repeated_substring('unkunkunk')
-    [0, 3, 6]
-    >>> find_repeated_substring(' unkunkunk')
-    [1, 4, 7]
-    >>> find_repeated_substring(' unkunkunk ')
-    [1, 4, 7]
-    >>> find_repeated_substring('unredact unk if you can.')  # FIXME: shoudl be [1, 4, 8]?
-    [9]
-    >>> find_repeated_substring(' unkunk unk ')  # FIXME: shoudl be [1, 4, 8]?
-    [1, 4, 8]
-    """
-    # print(f'TEXT: {text}')
-    substring = substring or MARKER
-    start = text.find(substring)
-    stop = start + len(substring)
-    starts = []
-    for i in range(max_occurences):
-        if not (start > -1 and stop <= len(text) - len(substring) + 1):
-            break
-        # print(start, stop)
-        if len(starts):
-            stop = starts[-1] + len(substring)
-            starts.append(stop + start)
-        else:
-            starts = [start]
-        # print(start, stop)
-        start = text[stop:].find(substring)
-        if start < 0 and len(starts) > 1:
-            return starts[:-1]
-        # print(start, stop)
-        # print(starts)
-    return starts
 
 
 REDACTION_MARKERS = [
@@ -287,82 +247,6 @@ def unredact_text(text, redactions=[2, 3]):
     return (predictions_parameterized, text)
 
 
-def unredact_tokens(prefix_tokens=[], suffix_tokens=[], num_redactions=5):
-    global P
-    if not P:
-        P = load_pipeline()
-    tokens = list(prefix_tokens) + [MASK_TOKEN] * num_redactions + list(suffix_tokens)
-    tokens = tokens[:512]
-    tokens_original = tokens.copy()
-    # text = ' '.join(tokens)
-    # print(f"Predicting {num_redactions} MASK tokens in: {' '.join(tokens)}")
-
-    indices = np.asarray([[P.token_dict[token] for token in tokens] + [0] * (512 - len(tokens))])
-    segments = np.asarray([[0] * len(tokens) + [0] * (512 - len(tokens))])
-    masks = np.asarray([[0] * 512])
-    redactions = []
-    for i, t in enumerate(tokens):
-        if t == MASK_TOKEN:
-            redactions.append(i - 1)
-            masks[0][i] = 1
-
-    # masks = np.asarray([[0, 1, 1] + [0] * (512 - 3)])
-
-    predicts = P.model.predict([indices, segments, masks])[0]
-    predicts = np.argmax(predicts, axis=-1)
-    predictions_parameterized = list(
-        map(lambda x: P.token_dict_rev[x],
-            [x for (j, x) in enumerate(predicts[0]) if j - 1 in redactions])
-        )
-    # predictions_hardcoded = list(map(lambda x: token_dict_rev[x], predicts[0][3:5]))
-    print(f'Predictions: {predictions_parameterized}')
-
-    # print(f'Hardcoded fill with: {predictions_hardcoded}')
-    # list(map(lambda x: token_dict_rev[x], predicts[0][1:3]))
-    print(f'.    Actual: {[t for (i, t) in enumerate(tokens_original) if i - 1 in redactions]}')
-    print()
-    print()
-    # if len(predictions) > 10:
-    #     break
-    return (predictions_parameterized, tokens)
-
-
-def unredact_bert(text, marker='unk'):
-    global P
-    if not P:
-        P = load_pipeline()
-    unredacted = ' '
-    marker = marker or 'unk'
-    redactions = find_repeated_substring(text, substring=marker)
-    # text = input('Text: ')
-    if not redactions:
-        print('No redactions found')
-        unredacted = text
-        return redactions
-    # print(redactions)
-    start, stop = redactions[0], redactions[-1] + len(marker)
-    prefix, suffix = text[:start], text[stop:]
-    # print(start, stop)
-    # print(f'prefix: {prefix}')
-    # print(f'suffix: {suffix}')
-    prefix_tokens = P.tokenizer.tokenize(prefix)[:-1]
-    suffix_tokens = P.tokenizer.tokenize(suffix)[1:]
-    # print(f'prefix_tokens: {prefix_tokens}')
-    # print(f'suffix_tokens: {suffix_tokens}')
-    unredacted_tokens, all_tokens = unredact_tokens(prefix_tokens=prefix_tokens, suffix_tokens=suffix_tokens, num_redactions=len(redactions))
-    print(f'all_tokens: {all_tokens}')
-    print(f'unredacted_tokens: {unredacted_tokens}')
-    j = 0
-    for (i, tok) in enumerate(all_tokens):
-        if tok == '[MASK]' and j < len(unredacted_tokens):
-            all_tokens[i] = unredacted_tokens[j]
-            j += 1
-
-    unredacted = ' '.join(all_tokens)
-
-    return unredacted
-
-
 """## The Bot
 
 This section of code uses the keras-bert model to try to guess any of the words in some text you input into the bot.
@@ -429,3 +313,170 @@ This is the interesting part, where all the many layers of the BERT model are re
 """
 
 P = load_pipeline()
+
+
+def find_repeated_substring(text, substring=MARKER, max_occurences=32):
+    """ Find contiguous redaction markers and return the start locations
+
+    >>> text = 'Mueller said "MASK MASK MASK", then walked away.'
+    >>> find_repeated_substring(text, 'MASK')
+    [14, 19, 24]
+    >>> find_repeated_substring('unkunkunk')
+    [0, 3, 6]
+    >>> find_repeated_substring(' unkunkunk')
+    [1, 4, 7]
+    >>> find_repeated_substring(' unkunkunk ')
+    [1, 4, 7]
+    >>> find_repeated_substring('unredact unk if you can.')  # FIXME: shoudl be [1, 4, 8]?
+    [9]
+    >>> find_repeated_substring(' unkunk unk ')  # FIXME: shoudl be [1, 4, 8]?
+    [1, 4, 8]
+    """
+    # print(f'TEXT: {text}')
+    substring = substring or MARKER
+    start = text.find(substring)
+    stop = start + len(substring)
+    starts = []
+    for i in range(max_occurences):
+        if not (start > -1 and stop <= len(text) - len(substring) + 1):
+            break
+        # print(start, stop)
+        if len(starts):
+            stop = starts[-1] + len(substring)
+            starts.append(stop + start)
+        else:
+            starts = [start]
+        # print(start, stop)
+        start = text[stop:].find(substring)
+        if start < 0 and len(starts) > 1:
+            return starts[:-1]
+        # print(start, stop)
+        # print(starts)
+    return starts
+
+
+def unredact_tokens(prefix_tokens=[], suffix_tokens=[], num_redactions=5, actual_tokens=None):
+    global P
+    if not P:
+        P = load_pipeline()
+    tokens = list(prefix_tokens) + [MASK_TOKEN] * num_redactions + list(suffix_tokens)
+    tokens = tokens[:512]
+    tokens_original = tokens.copy()
+
+    indices = np.asarray([[P.token_dict[token] for token in tokens] + [0] * (512 - len(tokens))])
+    segments = np.asarray([[0] * len(tokens) + [0] * (512 - len(tokens))])
+    masks = np.asarray([[0] * 512])
+    redactions = []
+    for i, t in enumerate(tokens):
+        if t == MASK_TOKEN:
+            redactions.append(i - 1)
+            masks[0][i] = 1
+
+    predicts = P.model.predict([indices, segments, masks])[0]
+    predicts = np.argmax(predicts, axis=-1)
+    predictions_parameterized = list(
+        map(lambda x: P.token_dict_rev[x],
+            [x for (j, x) in enumerate(predicts[0]) if j - 1 in redactions])
+        )
+    print(f'Predictions: {predictions_parameterized}')
+
+    all_actual_tokens = []
+    actual_tokens = actual_tokens or [MASK_TOKEN] * num_redactions
+    k = 0
+    for i, masked_tok in enumerate(tokens_original):
+        if i - 1 in redactions:
+            all_actual_tokens.append(actual_tokens[k])
+            k += 1
+        else:
+            all_actual_tokens.append(masked_tok)
+    print(f'    Actual: {[tok for (i, tok) in enumerate(all_actual_tokens) if i - 1 in redactions]}')
+
+    return (predictions_parameterized, tokens)
+
+
+def unredact_bert(text, marker=MARKER, redacted_tokens=None):
+    global P
+    if not P:
+        P = load_pipeline()
+    marker = marker or 'unk'
+
+    redactions = find_repeated_substring(text, substring=marker)
+    if not redactions:
+        print('No redactions found')
+        return redactions
+
+    start, stop = redactions[0], redactions[-1] + len(marker)
+    prefix, suffix = text[:start], text[stop:]
+    prefix_tokens = P.tokenizer.tokenize(prefix)[:-1]
+    suffix_tokens = P.tokenizer.tokenize(suffix)[1:]
+    unredacted_tokens, all_tokens = unredact_tokens(
+        prefix_tokens=prefix_tokens,
+        suffix_tokens=suffix_tokens,
+        num_redactions=len(redactions),
+        actual_tokens=redacted_tokens)
+
+    print(f'all_tokens: {all_tokens}')
+    print(f'unredacted_tokens: {unredacted_tokens}')
+
+    j = 0
+    count_correct = 0
+    for (i, tok) in enumerate(all_tokens):
+        if tok == '[MASK]' and j < len(unredacted_tokens):
+            all_tokens[i] = unredacted_tokens[j]
+            if redacted_tokens:
+                count_correct += int(unredacted_tokens[j] == redacted_tokens[j])
+            j += 1
+    if redacted_tokens and redacted_tokens[0] != MASK_TOKEN:
+        print(f' {count_correct} out of {len(unredacted_tokens)} redacted tokens were correctly predicted by BERT.')
+
+    unredacted_text = ' '.join(all_tokens)
+
+    return unredacted_text
+
+
+unredacted_text = unredact_bert("To be or not to unk, that is the question.")
+
+print(unredacted_text)
+
+unredacted_text = unredact_bert("To be or not to unk, that is the question.", redacted_tokens=['be'])
+
+print(unredacted_text)
+
+unredacted_text = unredact_bert("Is the president of the United States named unk unk ?", redacted_tokens=['Barak', 'Obama'])
+
+unredacted_text = unredact_bert("And now I'd like to introduce you to the 2008 President of the United States of America, unk unk !",
+                                redacted_tokens=['Barak', 'Obama'])
+
+"""## Cased BERT Model
+So the uncased BERT model did fine on sentences where case isn't important.
+But let's see if it can do better on proper nouns (famous people names).
+We'll need to load the "cased" BERT model for that.
+"""
+
+MARKER = 'unk'
+
+BERT_MODEL_CASED = True
+BERT_MODELS_DIR = "~/apps/unredactor/unredactor/app/models/cased_L-12_H-768_A-12"
+
+BERT_MODEL_DATE = "2018_10_18"
+BERT_MODEL_NAME = "cased_L-12_H-768_A-12"
+
+BERT_MODEL_DIR = "$BERT_MODELS_DIR/$BERT_MODEL_NAME"
+BERT_MODEL_ZIP = "$BERT_MODEL_DIR.zip"
+UNZIPPED_MODEL_PATH = "~/apps/unredactor/unredactor/app/models/cased_L-12_H-768_A-12"
+CONFIG_PATH = "$UNZIPPED_MODEL_PATH/bert_config.json"
+CHECKPOINT_PATH = "$UNZIPPED_MODEL_PATH/bert_model.ckpt"
+DICT_PATH = "$UNZIPPED_MODEL_PATH/vocab.txt"
+
+
+P = load_pipeline(unzipped_model_path=UNZIPPED_MODEL_PATH, cased=BERT_MODEL_CASED)
+
+unredacted_text = unredact_bert("And now I'd like to introduce you to the 2008 President of the United States of America, unk unk !",
+                                redacted_tokens=['Barak', 'Obama'])
+
+unredacted_text = unredact_bert("The President of the United States of America after George W Bush was unk unk .", redacted_tokens=['Barak', 'Obama'])
+
+unredact_bert("The President of the United States, unk , made an announcement today about the Iraq war.", redacted_tokens=['Bush'])
+
+
+"""Still no joy. We'll have to train it on some text with the names in it that matter to us, if we want it to know some important facts about them."""
