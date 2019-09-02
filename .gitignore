@@ -1,3 +1,4 @@
+training_checkpoints
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -107,5 +108,7 @@ venv.bak/
 /*.git
 
 # data files
-.bert_model.ckpt.data-00000-of-00001
-/data
+/data/
+*.h5
+bert_model.ckpt*
+.bert_model.ckpt*

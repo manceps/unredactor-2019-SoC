@@ -1,23 +1,13 @@
-# import os
+import os
 import codecs
 import sys
-# import re
-import os
-# import flask
+import re
+import flask
 import numpy as np
-# import pandas as pd
-# import scipy
+import pandas as pd
+import scipy
 from keras_bert import load_trained_model_from_checkpoint, Tokenizer
-# import tensorflow as tf
-
-
-"""### Global variables
-
-Let's specify some global variables to hold things like paths.
-Globals in python are always written in all caps.
-That makes it easier to find them and replace them with local variables later.
-Local variables make your code more modular, easier to reuse and maintain.
-"""
+import tensorflow as tf
 
 MARKER = 'unk'         # our abbreviated UNKOWN word marker (blank)
 MASK_TOKEN = '[MASK]'  # defined by the BERT model
@@ -25,12 +15,12 @@ MASK_TOKEN = '[MASK]'  # defined by the BERT model
 BERT_MODEL_CASED = False
 BERT_MODELS_DIR = "/home/msoc/apps/unredactor/unredactor/app/models/uncased_L-12_H-768_A-12"
 
-BERT_MODEL_DATE = "2018_10_18"
-BERT_MODEL_NAME = "uncased_L-12_H-768_A-12"
+BERT_MODEL_DATE ="2018_10_18"
+BERT_MODEL_NAME ="uncased_L-12_H-768_A-12"
 
 BERT_MODEL_DIR = "$BERT_MODELS_DIR/$BERT_MODEL_NAME"
-BERT_MODEL_ZIP = "$BERT_MODEL_DIR.zip"
-UNZIPPED_MODEL_PATH = os.path.expanduser("~/apps/unredactor/unredactor/app/models/uncased_L-12_H-768_A-12")
+BERT_MODEL_ZIP ="$BERT_MODEL_DIR.zip"
+UNZIPPED_MODEL_PATH = "/home/msoc/apps/unredactor/unredactor/app/models/uncased_L-12_H-768_A-12"
 CONFIG_PATH = "$UNZIPPED_MODEL_PATH/bert_config.json"
 CHECKPOINT_PATH = "$UNZIPPED_MODEL_PATH/bert_model.ckpt"
 DICT_PATH = "$UNZIPPED_MODEL_PATH/vocab.txt"
@@ -38,13 +28,11 @@ DICT_PATH = "$UNZIPPED_MODEL_PATH/vocab.txt"
 global P
 P = None
 
-
 class NLPPipeline(dict):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for k, v in self.items():
             setattr(self, k, v)
-
 
 def load_pipeline(unzipped_model_path=UNZIPPED_MODEL_PATH, cased=BERT_MODEL_CASED):
     if len(sys.argv) != 4:
@@ -74,9 +62,7 @@ def load_pipeline(unzipped_model_path=UNZIPPED_MODEL_PATH, cased=BERT_MODEL_CASE
 
     return NLPPipeline(model=model, token_dict=token_dict, token_dict_rev=token_dict_rev, tokenizer=tokenizer)
 
-
 P = load_pipeline()
-
 
 def find_repeated_substring(text, substring=MARKER, max_occurences=32):
     substring = substring or MARKER
@@ -118,6 +104,7 @@ def unredact_tokens(prefix_tokens=[], suffix_tokens=[], num_redactions=5, actual
             redactions.append(i - 1)
             masks[0][i] = 1
 
+
     predicts = P.model.predict([indices, segments, masks])[0]
     predicts = np.argmax(predicts, axis=-1)
     predictions_parameterized = list(
@@ -138,17 +125,18 @@ def unredact_tokens(prefix_tokens=[], suffix_tokens=[], num_redactions=5, actual
     print(f'    Actual: {[tok for (i, tok) in enumerate(all_actual_tokens) if i - 1 in redactions]}')
 
     return (predictions_parameterized, tokens)
-
-
-def unredact_bert(text, get_words=False, marker=MARKER, redacted_tokens=None):
+  
+def unredact(text, get_words=False, marker=MARKER, redacted_tokens=None):
     global P
     if not P:
         P = load_pipeline()
+    unredacted = ' '
     marker = marker or 'unk'
 
     redactions = find_repeated_substring(text, substring=marker)
     if not redactions:
         print('No redactions found')
+        unredacted = text
         return redactions
 
     start, stop = redactions[0], redactions[-1] + len(marker)
@@ -178,9 +166,6 @@ def unredact_bert(text, get_words=False, marker=MARKER, redacted_tokens=None):
     unredacted_text = ' '.join(all_tokens)
 
     if get_words:
-        return unredacted_text, unredacted_tokens
+    	return unredacted_text, unredacted_tokens
 
     return unredacted_text
-
-
-# unredacted_text, unredacted_words = unredact_bert("To be or not to unk, that is the question.", get_words=True)

@@ -479,4 +479,6 @@ unredacted_text = unredact_bert("The President of the United States of America a
 unredact_bert("The President of the United States, unk , made an announcement today about the Iraq war.", redacted_tokens=['Bush'])
 
 
-"""Still no joy. We'll have to train it on some text with the names in it that matter to us, if we want it to know some important facts about them."""
+"""Still no joy. We'll have to train it on some text with the names in it that matter to us, if
+we want it to know some important facts about them.
+"""
