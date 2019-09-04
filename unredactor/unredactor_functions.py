@@ -1,12 +1,14 @@
 import os
 import random
 
-dir = os.path.realpath('.')
-filename = os.path.join(dir, 'app/words')
+
+# TODO move this to constants and move words file to data/words.txt
+word_dir = os.path.realpath(os.path.dirname(__file__))
+filename = os.path.join(dir, 'app', 'words')
 words = open(filename).read().splitlines()
 
 
-def unredact(text, get_words=False):
+def sort_and_replace_unks(text, get_words=False):
     sorted_text = text
     listed_text = sorted_text.split()
     listed_text.sort()

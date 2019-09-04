@@ -2,10 +2,16 @@ import sys
 import os
 import codecs
 import re
+import logging
+
 import numpy as np
 import pandas as pd
+
 from keras_bert import load_trained_model_from_checkpoint, Tokenizer
 from find_redactions import clean_dataframe, get_line_pairs, find_repeated_substring
+from constants import DATA_DIR  # noqa
+
+log = logging.getLogger(__name__)
 
 
 REDACTION_MARKERS = [
@@ -20,7 +26,8 @@ REDACTION_MARKERS = [
 REDACTION_MARKER = REDACTION_MARKERS[2]
 REDACTION_BERT_TOKEN = '[MASK]'
 
-UNZIPPED_MODEL_PATH = '~/midata/public/models/bert/uncased_L-12_H-768_A-12'
+UNZIPPED_MODEL_PATH = os.path.join(DATA_DIR, 'uncased_L-12_H-768_A-12')
+
 if len(sys.argv) == 2:
     UNZIPPED_MODEL_PATH = sys.argv[1]
 
@@ -190,6 +197,7 @@ def load_pipeline(UNZIPPED_MODEL_PATH=UNZIPPED_MODEL_PATH, cased=BERT_MODEL_CASE
 
     model = load_trained_model_from_checkpoint(config_path, checkpoint_path, training=True)
     model.summary(line_length=120)
+    print(f"Loaded model from {UNZIPPED_MODEL_PATH}: {model}")
 
     token_dict = {}
     with codecs.open(dict_path, 'r', 'utf8') as reader:
@@ -203,6 +211,7 @@ def load_pipeline(UNZIPPED_MODEL_PATH=UNZIPPED_MODEL_PATH, cased=BERT_MODEL_CASE
         print('***************uncased tokenizer*******************')
     tokenizer = Tokenizer(token_dict, cased=cased)
 
+    print(f"Built tokenizer from {len(token_dict)}-word vocab: {tokenizer}")
     return NLPPipeline(model=model, token_dict=token_dict, token_dict_rev=token_dict_rev, tokenizer=tokenizer)
 
 
