@@ -3,8 +3,8 @@ import random
 
 
 # TODO move this to constants and move words file to data/words.txt
-word_dir = os.path.realpath(os.path.dirname(__file__))
-filename = os.path.join(dir, 'app', 'words')
+word_dir = os.path.realpath(os.path.dirname(__file__))  # FIXED: dir->word_dir: don't use builtin function names as variable names
+filename = os.path.join(word_dir, 'app', 'words')  # FIXED: don't use path sep ("/" or "\\"), os.path.join uses sep for your OS (Win/Linux)
 words = open(filename).read().splitlines()
 
 
