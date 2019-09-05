@@ -6,7 +6,7 @@ import logging.handlers
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
-DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data')
+DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
 if not os.path.isdir(DATA_DIR):
     os.mkdir(DATA_DIR)
 LOG_DIR = os.path.join(DATA_DIR, 'log')
