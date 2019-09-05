@@ -24,11 +24,12 @@ def about():
 
 @app.route('/api/unredact-bert')
 def api():
-    unredacted_text, unredacted_words = None, None
+    unredacted_text, unredacted_words = '', []
     text = request.args.get('text')
     if text:
         unredacted_text, unredacted_words = text, ['word1', 'word2']
         # unredacted_text, unredacted_words = unredact_bert(text, get_words=True)
+        # unredacted_text = unredact_text_v2(text)
     return render_template('unredacted.json', text=text, unredacted_text=unredacted_text, unredacted_words=unredacted_words)
 
     # original_text = request.args.get('text')
@@ -60,9 +61,9 @@ def unredactor():
     # Depending on which module is imported, either the sort function (unredactor functions) or
     # the actual unredact function (muellerbot) runs
 
-    unredacted_text, unredacted_words = '', []
+    unredacted_text = ""
+    unredacted_words = []
     if form.validate_on_submit():
         text = str(form.text.data)
-        unredacted_text, unredacted_words = unredact_text_v2(text, get_words=True)
+        unredacted_text = unredact_text_v2(text)
     return render_template('unredact.html', title='Unredact', form=form, text=text, unredacted_text=unredacted_text, unredacted_words=unredacted_words)
-
