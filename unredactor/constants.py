@@ -22,7 +22,7 @@ root_logger = logging.getLogger()
 root_logger.setLevel(logging.WARN)
 
 log = logging.getLogger(__name__)
-handler = logging.handlers.TimedRotatingFileHandler(LOG_DIR, when='midnight')
+handler = logging.handlers.TimedRotatingFileHandler(os.path.join(LOG_DIR, 'unredactor.constants.log'), when='midnight')
 handler.setLevel(logging.INFO)
 # formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 # handler.setFormatter(formatter)
