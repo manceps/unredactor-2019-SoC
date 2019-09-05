@@ -1,5 +1,6 @@
 import os
 import random
+from load_and_predict import unredact_text_v2  # noqa
 
 
 # TODO move this to constants and move words file to data/words.txt
