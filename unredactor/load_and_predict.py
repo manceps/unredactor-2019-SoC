@@ -347,6 +347,9 @@ def unredact_examples(examples=TEXTS):
 
 
 def unredact_text_v2(text, marker='unk'):
+    global P
+    if not P:
+        P = load_pipeline()
     marker = marker or 'unk'
     redactions = find_repeated_substring(text, substring=marker)
     if not redactions:
