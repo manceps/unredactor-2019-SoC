@@ -374,7 +374,7 @@ def unredact_text_v2(text, marker='unk'):
             all_tokens[i] = unredacted_tokens[j]
             j += 1
 
-    return ' '.join(all_tokens)
+    return ' '.join(all_tokens).replace('[CLS]','').replace('[SEP]','') #alkari
     # unredacted = ' '.join([t[2:] if t.startswith('##') else t for t in unredacted_tokens])
 
 
