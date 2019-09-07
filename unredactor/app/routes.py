@@ -26,8 +26,8 @@ def about():
 def api(text="", get_words=True):
     unredacted_text = ""
     unredacted_words = []
-    unredacted_text, unredacted_words = unredact_text_get_and_words(text, get_words=get_words)
-    unredacted_words = list(unredacted_words)
+    unredacted_text = unredact_text_get_and_words(text)
+    unredacted_words = list(unredacted_text.split())
     return render_template('unredacted.json', text=text, unredacted_text=unredacted_text, unredacted_words=unredacted_words)
 
 
