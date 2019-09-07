@@ -366,6 +366,8 @@ def unredact_text_get_and_words(text, marker='unk', get_words=False):
     # print(f'prefix_tokens: {prefix_tokens}')
     # print(f'suffix_tokens: {suffix_tokens}')
     unredacted_tokens, all_tokens = unredact_tokens(prefix_tokens=prefix_tokens, suffix_tokens=suffix_tokens, num_redactions=len(redactions))
+    unredacted_tokens = [getattr(tok, 'text', str(tok)) for tok in unredacted_tokens]
+    all_tokens = [getattr(tok, 'text', str(tok)) for tok in all_tokens]
     log.info(f'all_tokens: {all_tokens}')
     log.info(f'unredacted_tokens: {unredacted_tokens}')
     j = 0
