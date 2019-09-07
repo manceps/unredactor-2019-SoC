@@ -30,8 +30,8 @@ def api_unredact_bert():
         get_words = 'true' in get_words.lower() or get_words in '1TtYy'
     unredacted_text = ""
     unredacted_words = []
-    unredacted_text = unredact_text_get_and_words(text)
-    unredacted_words = list(unredacted_text.split())
+    unredacted_text, unredacted_words = unredact_text_get_and_words(text, get_words=get_words)
+    # unredacted_words = list(unredacted_text.split())
     return render_template('unredacted.json', text=text, unredacted_text=unredacted_text, unredacted_words=unredacted_words)
 
 
