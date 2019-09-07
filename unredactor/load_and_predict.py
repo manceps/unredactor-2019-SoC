@@ -346,7 +346,7 @@ def unredact_examples(examples=TEXTS):
         predictions.append(unredact_text(text))
 
 
-def unredact_text_v2(text, marker='unk'):
+def unredact_text_get_and_words(text, marker='unk', get_words=False):
     global P
     if not P:
         P = load_pipeline()
@@ -373,8 +373,10 @@ def unredact_text_v2(text, marker='unk'):
         if tok == '[MASK]' and j < len(unredacted_tokens):
             all_tokens[i] = unredacted_tokens[j]
             j += 1
-
-    return ' '.join(all_tokens).replace('[CLS]','').replace('[SEP]','') #alkari
+    unredacted_text = ' '.join(all_tokens).replace('[CLS]', '').replace('[SEP]', '')  # alkari
+    if get_words:
+        return unredacted_text
+    return unredacted_text
     # unredacted = ' '.join([t[2:] if t.startswith('##') else t for t in unredacted_tokens])
 
 
@@ -386,7 +388,7 @@ def unredact_interactively():
     while unredacted:
         text = input('Text: ')
         marker = input('Redaction marker: ')
-        unredacted = unredact_text_v2(text, marker=(marker or 'unk'))
+        unredacted = unredact_text_get_and_words(text, marker=(marker or 'unk'))
         print(f'Unredacted text: {unredacted}')
 
 
