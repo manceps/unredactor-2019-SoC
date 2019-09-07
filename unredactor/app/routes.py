@@ -23,7 +23,11 @@ def about():
 
 
 @app.route('/api/unredact_bert')
-def api(text="", get_words=True):
+def api_unredact_bert():
+    text = request.args.get('text')
+    get_words = request.args.get('get_words', "True")
+    if isinstance(get_words, str):
+        get_words = 'true' in get_words.lower() or get_words in '1TtYy'
     unredacted_text = ""
     unredacted_words = []
     unredacted_text = unredact_text_get_and_words(text)
