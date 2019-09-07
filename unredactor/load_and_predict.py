@@ -375,7 +375,7 @@ def unredact_text_get_and_words(text, marker='unk', get_words=False):
             j += 1
     unredacted_text = ' '.join(all_tokens).replace('[CLS]', '').replace('[SEP]', '')  # alkari
     if get_words:
-        return unredacted_text
+        return unredacted_text, unredacted_tokens
     return unredacted_text
     # unredacted = ' '.join([t[2:] if t.startswith('##') else t for t in unredacted_tokens])
 
