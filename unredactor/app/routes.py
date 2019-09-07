@@ -1,4 +1,5 @@
 from flask import render_template, request
+from flask import jsonify
 # from flask import redirect, flash, url_for
 
 from app.constants import context
@@ -32,7 +33,8 @@ def api_unredact_bert():
     unredacted_words = []
     unredacted_text, unredacted_words = unredact_text_get_and_words(text, get_words=get_words)
     # unredacted_words = list(unredacted_text.split())
-    return render_template('unredacted.json', text=text, unredacted_text=unredacted_text, unredacted_words=unredacted_words)
+    return jsonify(dict(text=text, unredacted_text=unredacted_text, unredacted_words=unredacted_words))
+    # return render_template('unredacted.json', text=text, unredacted_text=unredacted_text, unredacted_words=unredacted_words)
 
 
 @app.route('/api/sort_words')
@@ -41,7 +43,8 @@ def api_sort_words():
     text = request.args.get('text')
     if text:
         unredacted_text, unredacted_words = sort_and_replace_unks(text, get_words=True)
-    return render_template('unredacted.json', text=text, unredacted_text=unredacted_text, unredacted_words=unredacted_words)
+    return jsonify(dict(text=text, unredacted_text=unredacted_text, unredacted_words=unredacted_words))
+    # return render_template('unredacted.json', text=text, unredacted_text=unredacted_text, unredacted_words=unredacted_words)
 
 
 @app.route('/unredactor', methods=['GET', 'POST'])
