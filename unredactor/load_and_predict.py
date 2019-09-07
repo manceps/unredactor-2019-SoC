@@ -361,8 +361,13 @@ def unredact_text_get_and_words(text, marker='unk', get_words=False):
     # print(start, stop)
     # print(f'prefix: {prefix}')
     # print(f'suffix: {suffix}')
-    prefix_tokens = [tok.text for tok in P.tokenizer.tokenize(prefix)[:-1]]
-    suffix_tokens = [tok.text for tok in P.tokenizer.tokenize(suffix)[1:]]
+
+    prefix_tokens = list(P.tokenizer.tokenize(prefix)[:-1])
+    suffix_tokens = list(P.tokenizer.tokenize(suffix)[1:])
+
+    # prefix_tokens = [tok.text for tok in P.tokenizer.tokenize(prefix)[:-1]]
+    # suffix_tokens = [tok.text for tok in P.tokenizer.tokenize(suffix)[1:]]
+
     # print(f'prefix_tokens: {prefix_tokens}')
     # print(f'suffix_tokens: {suffix_tokens}')
     unredacted_tokens, all_tokens = unredact_tokens(prefix_tokens=prefix_tokens, suffix_tokens=suffix_tokens, num_redactions=len(redactions))
