@@ -99,7 +99,7 @@ def find_text(df='mueller-report-with-redactions-marked.csv', substring='of docu
     return prefix, suffix
 
 
-def find_repeated_substring(text, substring=MARKER, max_occurences=32):
+def find_repeated_substring_dep(text, substring=MARKER, max_occurences=32): # alkari - replaced with function below
     """ Find contiguous redaction markers and return the start locations
 
     >>> text = 'Mueller said "MASK MASK MASK", then walked away.'
@@ -138,6 +138,37 @@ def find_repeated_substring(text, substring=MARKER, max_occurences=32):
         # print(starts)
     return starts
 
+def find_repeated_substring(text, substring=MARKER, max_occurences=32):
+    """ Find contiguous redaction markers and return the start locations
+
+    >>> text = 'Mueller said "MASK MASK MASK", then walked away.'
+    >>> find_repeated_substring(text, 'MASK')
+    [14, 19, 24]
+    >>> find_repeated_substring('unkunkunk')
+    [0, 3, 6]
+    >>> find_repeated_substring(' unkunkunk')
+    [1, 4, 7]
+    >>> find_repeated_substring(' unkunkunk ')
+    [1, 4, 7]
+    >>> find_repeated_substring('unredact unk if you can.')
+    [9]
+    >>> find_repeated_substring(' unkunk unk ')
+    [1, 4, 7]
+    """
+ 
+    substring = substring or MARKER
+    start = text.find(substring)
+    starts = []
+    if start < 0:
+      return []
+    for i in range(max_occurences):
+        starts.append(start)
+        stop = start + len(substring)
+        start = text[stop:].find(substring)
+        if start < 0:
+            return starts
+        start += stop
+    return starts
 
 def main():
     if len(sys.argv) > 1:
