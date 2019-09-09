@@ -84,8 +84,8 @@ def find_repeated_substring(text, substring=MARKER, max_occurences=32):
     stop = start + len(substring)
     starts = []
     for i in range(max_occurences):
-        if not (start > -1 and stop <= len(text) - len(substring) + 1):
-            break
+        #if not (start > -1 and stop <= len(text) - len(substring) + 1): # commented out by alkari
+        #    break
         # print(start, stop)
         if len(starts):
             stop = starts[-1] + len(substring)
