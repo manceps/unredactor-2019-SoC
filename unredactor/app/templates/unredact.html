@@ -3,24 +3,43 @@
 
 
 {% block app_content %}
-	<div class="container-fluid">
-		        <div class="row row-no-gutters">
-				<div class="col-sm-2"></div>
-			   	 <div class="col-sm-6">
-				        <div class="row">
-    				      <div class="col-sm-8">
-				      		<h1>Unredact</h1>
-						<div class="row">
-							<div class="col-sm-8">
-								{{ wtf.quick_form(form, horizontal_columns=('sm', 12, 12)) }}
-							</div>
-						</div>
-					<br>Output: {{ unredacted_text }}
-				      </div>
-				</div>		    
-			    </div>
-			    <div class="col-sm-4"></div>
-			</div>
-	</div>
-{% endblock %}
+    <div class="container-fluid">
+        <div class="row row-no-gutters">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h1>Unredact</h1>
+                        <div class="row">
+                            <div class="col-sm-8">
+                                {{ wtf.quick_form(form, horizontal_columns=('sm', 12, 12)) }}
+                            </div>
+                        </div>
+			<br><b>Output: {{ unredacted_text }}</b>
+                    </div>
+                    <div>
+                        <br>
+                        <br>
+                        <p>Unredactor can predict hidden words in a paragraph. Unlike MadLibs which fills a template with random words, Unredactor uses Natural Language Processing (NLP) to guess the most likely word(s) to complete coherent sentences.</p>
 
+
+                    </div>
+		    <div class="row"></div>
+		    <div class="row">
+
+                        <br>
+                        <p>Type in your redacted paragraph and use the token unk for hidden words then press Unredact to see the best prediction</p>
+
+                        <p>Here's an example:</p>
+
+                        <p>Beyonce is an unk unk and actress</p>
+
+                        <p>Output: beyonce is an american singer and actress</p>
+		    </div>
+			     
+                </div>              
+            </div>
+            <div class="col-sm-4"></div>
+        </div>
+    </div>
+{% endblock %}

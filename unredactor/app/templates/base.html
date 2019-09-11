@@ -2,6 +2,17 @@
 
 {% block head %}
 	{{ super() }}
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-27545787-7"></script>
+	<script>
+  window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+        gtag('config', 'UA-27545787-7');
+	</script>
+
+
 	<title>Unredactor</title>
 	<script src="https://code.jquery.com/jquery-git.js"></script>
 {% endblock %}
