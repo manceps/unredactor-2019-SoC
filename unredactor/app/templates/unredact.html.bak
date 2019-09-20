@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+{% block app_content %}
+	<div class="container-fluid">
+		        <div class="row row-no-gutters">
+				<div class="col-sm-2"></div>
+			   	 <div class="col-sm-6">
+				        <div class="row">
+    				      <div class="col-sm-8">
+				      		<h1>Unredact</h1>
+						<div class="row">
+							<div class="col-sm-8">
+								{{ wtf.quick_form(form, horizontal_columns=('sm', 12, 12)) }}
+							</div>
+						</div>
+					<br>Output: {{ unredacted_text }}
+				      </div>
+				</div>		    
+			    </div>
+			    <div class="col-sm-4"></div>
+			</div>
+	</div>
+{% endblock %}
+

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+
+
+<html>
+
+
+<style>
+
+	img.Manceps{
+		position: left;
+		width: 100px;
+		height: 110px;
+	}
+
+	img.unredactor{
+		position: left;
+	}
+
+	div.center{
+		text-align: center;
+	}
+
+	div.text{
+		margin-left: 355px;
+		margin-left: 300px;
+		text-align: center;
+		font-family: Courier;
+		font-size: 14px;
+	}
+
+	div.a {
+		text-align: justify;
+	}
+
+	
+
+	p.wrapped {
+		width: 700px;
+		word-wrap: break-word;
+		text-align: left;
+		margin-left: 355px;
+		
+		
+	}
+
+
+	h1 {
+		font-family: Courier; 
+		font-size: 22px;
+		font-weight: bold;
+		color: black;
+		
+	}
+
+	p {
+		font-family: Courier;
+		font-size: 14px;
+		text-align: center;
+
+	}
+		
+</style>
+
+<body>
+
+
+
+	<div class="a">
+	<div class="center">
+	<div class="Manceps"><img src="file:///Users/hopeyim/Downloads/Manceps_Logo_3c_White.png" width="100" height="110">
+	<div class="unredactor"><img src="file:///Users/hopeyim/Downloads/unredactor_logo_long.png" width="330" height="100">
+	
+
+
+<p>
+<h1>About Unredactor:</h1>
+<p>
+
+
+<p class="wrapped">Unredactor is an interactive app to edit with words. You can redact and enter text with this new app. The app is made to interact with the text and redact words etc. Not only that, this app is able to predict the words the user can come up with, and is enjoyable. The app is created for users to fill in the blanks, with the app being able to redact and predict words that are reasonable with the context and not unexpected like "Mad Libs." The Unredactor works by using a Google BERT (Bidirectional Encoder Representations from Transformers) model. The Unredactor app is a great way to show others the beauty and mystics of technology working on its own. Users will see the technology really working in the app. </p> 
+
+<p>
+<h1>Applications Used for Unredactor:</h1>
+<p>
+
+
+<p><strong><u>Flask App</u></strong></p>
+<p class="wrapped">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+<p><strong><u>HTML/CSS</u></strong></p>
+<p class="wrapped">HTML/CSS is a website platform to create any website with lines of code. HTML stands for HyperText Markup Language and this gives content for the website such as headings, paragraphs, and images. CSS stands for Cascading Style Sheets and this shows the visual appearance of the website such as fonts and colors. By utilizing this language, Hope and Alex were able to create the website for the Unredactor from scratch. </p>
+
+<p><strong><u>iOS</u></strong></p>
+<p class="wrapped">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+	
+
+
+
+	</div>
+	</div>
+	</div>
+	</div>
+	
+
+	
+	
+
+
+</p>
+</body>
+
+</html>
+
