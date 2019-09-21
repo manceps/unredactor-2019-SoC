@@ -1,3 +1,4 @@
+import csv,datetime
 from flask import render_template, request
 from flask import jsonify
 # from flask import redirect, flash, url_for
@@ -33,6 +34,9 @@ def api_unredact_bert():
     unredacted_words = []
     unredacted_text, unredacted_words = unredact_text_get_and_words(text, get_words=get_words)
     # unredacted_words = list(unredacted_text.split())
+    with open('/home/msoc/api_queries.csv', mode='a') as aq:
+        aq_writer = csv.writer(aq, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
+        aq_writer.writerow([text,unredacted_text,unredacted_words,str(datetime.datetime.now()),request.remote_addr])
     return jsonify(dict(text=text, unredacted_text=unredacted_text, unredacted_words=unredacted_words))
     # return render_template('unredacted.json', text=text, unredacted_text=unredacted_text, unredacted_words=unredacted_words)
 
@@ -56,4 +60,8 @@ def unredactor():
     if form.validate_on_submit():
         text = str(form.text.data)
         unredacted_text = unredact_text_get_and_words(text)
+    with open('/home/msoc/form_queries.csv', mode='a') as fq:
+        fq_writer = csv.writer(fq, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
+        fq_writer.writerow([text,unredacted_text,unredacted_words,str(datetime.datetime.now()),request.remote_addr])
+
     return render_template('unredact.html', title='Unredact', form=form, text=text, unredacted_text=unredacted_text, unredacted_words=unredacted_words)
