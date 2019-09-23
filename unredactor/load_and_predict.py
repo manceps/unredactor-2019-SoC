@@ -357,6 +357,9 @@ def unredact_text_get_and_words(text, marker='unk', get_words=False):
         return text
     # print(redactions)
     start, stop = redactions[0], redactions[-1] + len(marker)
+    if stop >=len(text): #alkari - terminate text with a period if last word is unk.
+        text +="."
+
     prefix, suffix = text[:start], text[stop:]
     # print(start, stop)
     # print(f'prefix: {prefix}')
